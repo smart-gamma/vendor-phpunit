@@ -2,6 +2,7 @@
     "name": "lamelle/unittester",
     "description": "provides extended methods to test controllers and services",
     "type": "component, lib",
+    "version": "dev-master",
     "require": {
         "php": ">=5.3.3"
     },
