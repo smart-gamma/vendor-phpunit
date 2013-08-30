@@ -2,6 +2,8 @@
 
 namespace LaMelle\PhpUnit\Tester;
 
+use Symfony\Component\HttpFoundation\Request;
+
 class ControllerTest extends ServiceTest
 {
   protected $request;

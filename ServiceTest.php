@@ -1,7 +1,7 @@
 <?php
 namespace LaMelle\PhpUnit\Tester;
 
-require_once __DIR__.'/../../../../../../../app/AppKernel.php';
+require_once __DIR__.'/../../../../../../app/AppKernel.php';
 
 class ServiceTest extends \PHPUnit_Framework_TestCase
 {
@@ -19,7 +19,7 @@ class ServiceTest extends \PHPUnit_Framework_TestCase
 	 */
 	protected function init()
 	{
-        self::$kernel = new \AppKernel('dev', true);
+        self::$kernel = new \AppKernel('test', true);
         self::$kernel->boot();
 
         $this->container = self::$kernel->getContainer();
