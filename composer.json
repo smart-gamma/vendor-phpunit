@@ -1,5 +1,5 @@
 {
-    "name": "lamelle/unittester",
+    "name": "lamelle/phpunit",
     "description": "provides extended methods to test controllers and services",
     "type": "component, lib",
     "version": "2.1-dev",
