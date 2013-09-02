@@ -16,6 +16,12 @@ class ControllerTest extends ServiceTest
      * @var Symfony\Component\HttpFoundation\Request $request
      */    
     protected $request;
+ 
+    /*
+     * App session
+     * @var Symfony\Component\HttpFoundation\Session $session
+     */    
+    protected $session;
     
     /*
      * Templating engine
@@ -40,6 +46,14 @@ class ControllerTest extends ServiceTest
             parent::__construct();
 
             $this->request = new Request();
+
+            $this->session = $this->getMock('Symfony\Component\HttpFoundation\Session\Session', array('getFlashBag','getName', 'isStarted'), array(), '', false);
+            
+            $this->session->expects($this->any())
+                    ->method('getFlashBag')
+                    ->will($this->returnValue($this->getMock('Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface')));
+            
+            $this->request->setSession($this->session);
             $this->container->enterScope('request');
             $this->container->set('request', $this->request, 'request');
 
@@ -62,5 +76,5 @@ class ControllerTest extends ServiceTest
             $this->controller = new $controller;
             $this->controller->setContainer($this->container);
     }
-   
+ 
 }
