@@ -11,9 +11,23 @@ use Symfony\Component\HttpFoundation\Request;
  */
 class ControllerTest extends ServiceTest
 {
+    /*
+     * App request
+     * @var Symfony\Component\HttpFoundation\Request $request
+     */    
     protected $request;
+    
+    /*
+     * Templating engine
+     * @var Symfony\Component\Templating\EngineInterface $twig
+     */ 
+    protected $twig;  
+    
+    /*
+     * Target test controller
+     * @var Symfony\Bundle\FrameworkBundle\Controller\Controller $controller
+     */    
     protected $controller;
-    protected $twig;
 
 	/**
 	 * Initializes a new instance of the ControllerTest class.
@@ -29,7 +43,7 @@ class ControllerTest extends ServiceTest
             $this->container->enterScope('request');
             $this->container->set('request', $this->request, 'request');
 
-            // Mock templating
+            //Mock templating
             if($isTwigEmulation)
             {
                 $this->twig = $this->getMockBuilder('Symfony\Bundle\FrameworkBundle\Templating\Engine')
@@ -41,7 +55,7 @@ class ControllerTest extends ServiceTest
                            ->will($this->returnValue('success'))
                             ;
             }  
-            // real twig render 
+            //Real twig render 
             else   
                 $this->twig = $this->container->get('twig'); 
 

@@ -10,8 +10,17 @@ require_once __DIR__.'/../../../../../../app/AppKernel.php';
  */
 class ServiceTest extends \PHPUnit_Framework_TestCase
 {
-  protected static $kernel;
-  protected $container;
+    /*
+     * App kernel
+     * @var \AppKernel $kernel
+     */
+    protected static $kernel;
+    
+    /*
+     * DI container
+     * @var Symfony\Component\DependencyInjection\ContainerInterface $container
+     */
+    protected $container;
 
 	/**
 	 * Initializes a new instance of the ServiceTest class.
@@ -26,6 +35,7 @@ class ServiceTest extends \PHPUnit_Framework_TestCase
     }
   
 	/**
+     * Boot init
 	 * @return void
 	 */
 	protected function init()
