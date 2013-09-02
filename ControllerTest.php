@@ -10,7 +10,7 @@ class ControllerTest extends ServiceTest
   protected $controller;
   protected $twig;
 
-  function __construct($controller)
+  function __construct($controller, $isTwigEmulation = false)
   {
           parent::__construct();
           
@@ -18,7 +18,21 @@ class ControllerTest extends ServiceTest
           $this->container->enterScope('request');
           $this->container->set('request', $this->request, 'request');
           
-          $this->twig = $this->container->get('twig'); 
+          // Mock templating
+          if($isTwigEmulation)
+          {
+            $this->twig = $this->getMockBuilder('Symfony\Bundle\FrameworkBundle\Templating\Engine')
+                               ->setMethods(array('render'))
+                               ->getMock();
+            
+            $this->twig->expects($this->any())
+                      ->method('render')
+                      ->will($this->returnValue('success'))
+                        ;
+          }  
+          // real render 
+          else   
+            $this->twig = $this->container->get('twig'); 
           
           $this->controller = new $controller;
           $this->controller->setContainer($this->container);
