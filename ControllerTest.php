@@ -50,8 +50,8 @@ class ControllerTest extends ServiceTest
             $this->session = $this->getMock('Symfony\Component\HttpFoundation\Session\Session', array('getFlashBag','getName', 'isStarted'), array(), '', false);
             
             $this->session->expects($this->any())
-                    ->method('getFlashBag')
-                    ->will($this->returnValue($this->getMock('Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface')));
+                          ->method('getFlashBag')
+                          ->will($this->returnValue($this->getMock('Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface')));
             
             $this->request->setSession($this->session);
             $this->container->enterScope('request');
@@ -60,14 +60,20 @@ class ControllerTest extends ServiceTest
             //Mock templating
             if($isTwigEmulation)
             {
-                $this->twig = $this->getMockBuilder('Symfony\Bundle\FrameworkBundle\Templating\Engine')
-                                   ->setMethods(array('render'))
+                $this->twig = $this->getMockBuilder('\Twig_Environment')
+                                   ->setMethods(array('render','exists','supports','renderResponce'))
                                    ->getMock();
 
                 $this->twig->expects($this->any())
                            ->method('render')
-                           ->will($this->returnValue('success'))
-                            ;
+                           ->will($this->returnValue('success'));
+                
+                $this->twig->expects($this->any())
+                           ->method('renderResponce')
+                           ->will($this->returnValue('success'));
+                
+                $this->twig->setLoader($this->getMockBuilder('\Twig_LoaderInterface')->getMock());
+                $this->container->set('twig', $this->twig);
             }  
             //Real twig render 
             else   
@@ -76,5 +82,4 @@ class ControllerTest extends ServiceTest
             $this->controller = new $controller;
             $this->controller->setContainer($this->container);
     }
- 
 }
