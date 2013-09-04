@@ -22,16 +22,24 @@ class ServiceTest extends \PHPUnit_Framework_TestCase
      */
     protected $container;
 
+    /*
+     * Target test service
+     * @var mixed $service
+     */    
+    protected $service;
+    
 	/**
 	 * Initializes a new instance of the ServiceTest class.
 	 *
-	 * @param string      $key   unique name for the lock
-	 * @param string|null $path  put lock file in this folder, use null for system temp dir
+	 * @param string      $service   path to service class
 	 */  
-    function __construct()
+    function __construct($service = '')
     {
             $this->init();
             parent::__construct();
+            
+            if(!empty($service))
+                $this->service = new $service;
     }
   
 	/**
