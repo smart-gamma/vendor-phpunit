@@ -32,18 +32,26 @@ class ServiceTest extends \PHPUnit_Framework_TestCase
 	 * Initializes a new instance of the ServiceTest class.
 	 *
 	 * @param string      $service   path to service class
+     * @param bool        $construct_container flag to pass container in constructor  
 	 */  
-    function __construct($service = '')
+    function __construct($service = '', $construct_container = false)
     {
+            //Kernel/container startup 
             $this->init();
             parent::__construct();
             
-            if(!empty($service))
+            //Call container independent service
+            if(!empty($service) && !$construct_container)
                 $this->service = new $service;
+            
+           //Call container dependent service
+            if(!empty($service) && $construct_container)
+                $this->service = new $service($this->container);
+
     }
   
 	/**
-     * Boot init
+     * Boot Kernel and container init
 	 * @return void
 	 */
 	protected function init()
