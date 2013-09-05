@@ -39,9 +39,9 @@ class ControllerTest extends ServiceTest
 	 * Initializes a new instance of the ControllerTest class.
 	 *
 	 * @param string $controller path to controller to test
-	 * @param bool   $isTwigEmulation switcher for twig mock emulation or real render
+	 * @param bool   $isMockEmulation switcher for twig mock emulation or real render
 	 */    
-    function __construct($controller, $isTwigEmulation = false)
+    function __construct($controller, $isMockEmulation = false)
     {
             parent::__construct();
 
@@ -58,7 +58,7 @@ class ControllerTest extends ServiceTest
             $this->container->set('request', $this->request, 'request');
 
             //Mock templating
-            if($isTwigEmulation)
+            if($isMockEmulation)
             {
                 $this->twig = $this->getMockBuilder('\Twig_Environment')
                                    ->setMethods(array('render','exists','supports','renderResponce'))
