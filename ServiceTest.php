@@ -60,5 +60,40 @@ class ServiceTest extends \PHPUnit_Framework_TestCase
         self::$kernel->boot();
 
         $this->container = self::$kernel->getContainer();
-	}  
+	}
+    
+    /*
+     * Get mock of Entity manager
+     * @param array $testRepositorySet set with Repository behavior - Set has Name of repository and bunch of emulated methods 
+     * @return \Doctrine\ORM\Mock_EntityManager
+     */
+    protected function getEntityManagerMock($testRepositorySet = array())
+    {
+        $mockEntityManager = $this->getMock('\Doctrine\ORM\EntityManager',
+                               array('getRepository', 'getClassMetadata', 'persist', 'flush'), array(), '', false); 
+        
+        $mockEntityManager->expects($this->any())
+            ->method('getClassMetadata')
+            ->will($this->returnValue((object)array('name' => 'aClass')));
+        
+        $mockEntityManager->expects($this->any())
+            ->method('persist')
+            ->will($this->returnValue(null));
+        
+        $mockEntityManager->expects($this->any())
+            ->method('flush')
+            ->will($this->returnValue(null));
+
+        // Add used repositories with emulated methods
+        if(sizeof($testRepositorySet))
+            foreach($testRepositorySet as $testRepository)
+            {
+                $mockEntityManager->expects($this->once())
+                    ->method('getRepository')
+                    ->with($testRepository->getRepositoryName())
+                    ->will($this->returnValue($testRepository->getMockRepository()));
+            }
+        
+        return $mockEntityManager;
+    }
 }
