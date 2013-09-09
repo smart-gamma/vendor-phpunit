@@ -82,4 +82,15 @@ class ControllerTest extends ServiceTest
             $this->controller = new $controller;
             $this->controller->setContainer($this->container);
     }
+  
+    /*
+     * Set of phpunit additional assert to test controller action responce ok
+     * @param \Symfony\Component\HttpFoundation\Response $result - controller action answer
+     */ 
+    public function assertActionResponded($result)
+    {
+        $this->assertInstanceOf('\Symfony\Component\HttpFoundation\Response', $result);
+        $this->assertEquals(200,$result->getStatusCode());
+        $this->assertNotNull($result->getContent());
+    }    
 }
