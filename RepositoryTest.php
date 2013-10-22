@@ -12,7 +12,7 @@ class RepositoryTest extends \PHPUnit_Framework_TestCase
      * Mapper type (ORM/ODM) 
      * @var string $repositoryType
      */     
-     protected $repositoryType = 'Doctrine\ORM\EntityRepository';
+     protected $repositoryType = 'LaMelle\Framework\Repository\CacheRepository';//'Doctrine\ORM\EntityRepository';
      
     /*
      * Mock of repository 
