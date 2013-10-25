@@ -3,6 +3,7 @@
 namespace LaMelle\PhpUnit\Tester;
 
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * PhpUnit Extension for Symfony2 controllers unit tests 
@@ -24,10 +25,16 @@ class ControllerTest extends ServiceTest
     protected $session;
     
     /*
-     * Templating engine
-     * @var Symfony\Component\Templating\EngineInterface $twig
+     * Twig env
+     * @var \Twig_Environment $twig
      */ 
     protected $twig;  
+
+    /*
+     * Templating engine
+     * @var Symfony\Component\Templating\EngineInterface $templating
+     */ 
+    protected $templating;  
     
     /*
      * Target test controller
@@ -60,24 +67,32 @@ class ControllerTest extends ServiceTest
             //Mock templating
             if($isMockEmulation)
             {
+                //Twig emulation
                 $this->twig = $this->getMockBuilder('\Twig_Environment')
-                                   ->setMethods(array('render','exists','supports','renderResponce'))
+                                   ->setMethods(array('render', 'exists', 'supports'))
                                    ->getMock();
 
                 $this->twig->expects($this->any())
                            ->method('render')
-                           ->will($this->returnValue('success'));
-                
-                $this->twig->expects($this->any())
-                           ->method('renderResponce')
-                           ->will($this->returnValue('success'));
+                           ->will($this->returnValue('success'));               
                 
                 $this->twig->setLoader($this->getMockBuilder('\Twig_LoaderInterface')->getMock());
                 $this->container->set('twig', $this->twig);
+                
+                //Templating emulation
+                $this->templating = $this->getMockBuilder('Symfony\Bundle\FrameworkBundle\Templating\EngineInterface')
+                                   ->setMethods(array('render', 'exists', 'supports', 'renderResponse'))
+                                   ->getMock();
+                
+                $this->templating->expects($this->any())
+                           ->method('renderResponse')
+                           ->will($this->returnValue(new Response()));
             }  
             //Real twig render 
-            else   
+            else {  
                 $this->twig = $this->container->get('twig'); 
+                $this->templating = $this->container->get('templating'); 
+            }    
 
             $this->controller = new $controller;
             $this->controller->setContainer($this->container);

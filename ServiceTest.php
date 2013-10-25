@@ -52,10 +52,9 @@ class ServiceTest extends \PHPUnit_Framework_TestCase
             if(!empty($service) && !$construct_container)
                 $this->service = new $service;
             
-           //Call container dependent service
+            //Call container dependent service
             if(!empty($service) && $construct_container)
                 $this->service = new $service($this->container);
-
     }
   
 	/**
