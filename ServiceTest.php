@@ -1,7 +1,7 @@
 <?php
 namespace LaMelle\PhpUnit\Tester;
 
-require_once __DIR__.'/../../../../../../app/AppKernel.php';
+require_once realpath(__DIR__).'/../../../../../../app/AppKernel.php';
 
 /**
  * PhpUnit Extension for Symfony2 services unit tests 
