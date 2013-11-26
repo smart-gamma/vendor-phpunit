@@ -1,12 +1,7 @@
 <?php
 namespace LaMelle\PhpUnit\Tester;
 
-/*
- * tmp solution to work in local dev/capifony target env
- * 
- */
-$path = strpos(realpath(__DIR__),'shared/vendor') ? realpath(__DIR__).'/..' : realpath(__DIR__);
-require_once $path . '/../../../../../../app/AppKernel.php';
+require_once realpath(__DIR__).'/../../../../../../app/AppKernel.php';
 
 /**
  * PhpUnit Extension for Symfony2 services unit tests 
