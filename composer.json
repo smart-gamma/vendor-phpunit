@@ -1,8 +1,8 @@
 {
-    "name": "lamelle/phpunit",
-    "description": "provides extended methods to test controllers and services",
+    "name": "gamma/phpunit",
+    "description": "provides extended methods to test controllers and services for Symfony2",
     "type": "component, lib",
-    "version": "2.1-dev",
+    "version": "dev-master",
     "require": {
         "php": ">=5.3.3"
     },
@@ -13,7 +13,7 @@
         }
     ],
     "autoload": {
-        "psr-0": { "LaMelle\\PhpUnit\\Tester": "" }
+        "psr-0": { "Gamma\\PhpUnit\\Tester": "" }
     },
-    "target-dir": "LaMelle/PhpUnit/Tester"
+    "target-dir": "Gamma/PhpUnit/Tester"
 }
