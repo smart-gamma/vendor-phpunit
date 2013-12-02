@@ -1,5 +1,5 @@
 <?php
-namespace LaMelle\PhpUnit\Tester;
+namespace Gamma\PhpUnit\Tester;
 
 /**
  * PhpUnit Extension for Symfony2 repositories unit tests 

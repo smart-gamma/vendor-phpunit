@@ -1,6 +1,6 @@
 <?php
 
-namespace LaMelle\PhpUnit\Tester;
+namespace Gamma\PhpUnit\Tester;
 
 /**
  * Solution to work in local dev/capifony target env

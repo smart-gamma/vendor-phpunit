@@ -1,6 +1,6 @@
 <?php
 
-namespace LaMelle\PhpUnit\Tester;
+namespace Gamma\PhpUnit\Tester;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
