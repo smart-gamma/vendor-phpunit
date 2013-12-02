@@ -22,7 +22,7 @@ class ServiceTest extends \PHPUnit_Framework_TestCase
      *  
      * @var bool
      */
-    protected $isMockEmulation = true;
+    protected $isMockEmulation = false;
 
     /**
      * App kernel
