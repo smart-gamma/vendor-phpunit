@@ -12,31 +12,31 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class ControllerTest extends ServiceTest
 {
-    /*
+    /**
      * App request
      * @var Symfony\Component\HttpFoundation\Request $request
      */
     protected $request;
 
-    /*
+    /**
      * App session
      * @var Symfony\Component\HttpFoundation\Session $session
      */
     protected $session;
 
-    /*
+    /**
      * Twig env
      * @var \Twig_Environment $twig
      */
     protected $twig;
 
-    /*
+    /**
      * Templating engine
      * @var Symfony\Component\Templating\EngineInterface $templating
      */
     protected $templating;
 
-    /*
+    /**
      * Target test controller
      * @var Symfony\Bundle\FrameworkBundle\Controller\Controller $controller
      */
@@ -97,7 +97,7 @@ class ControllerTest extends ServiceTest
             $this->controller->setContainer($this->container);
     }
 
-    /*
+    /**
      * Set of phpunit additional assert to test controller action responce ok
      * @param \Symfony\Component\HttpFoundation\Response $result - controller action answer
      */

@@ -8,19 +8,19 @@ namespace Gamma\PhpUnit\Tester;
  */
 class RepositoryTest extends \PHPUnit_Framework_TestCase
 {
-    /*
+    /**
      * Mapper type (ORM/ODM)
      * @var string $repositoryType
      */
      protected $repositoryType = 'LaMelle\Framework\Repository\CacheRepository';//'Doctrine\ORM\EntityRepository';
 
-    /*
+    /**
      * Mock of repository
      * @var \Doctrine\ORM\Mock_EntityRepository $mockRepository
      */
     protected $mockRepository;
 
-    /*
+    /**
      * Testing Repository name (must be set in child class)
      * @var string $repositoryName ('BundleName::RepositoryName')
      */
@@ -32,13 +32,13 @@ class RepositoryTest extends \PHPUnit_Framework_TestCase
      */
     protected $entity = '';
 
-    /*
+    /**
      * List of emulating repository's methods (must be set in child class)
      * @var array $repositoryMethods
      */
     protected $repositoryMethods = array();
 
-    /*
+    /**
      * Create mock of repository
      */
     public function __construct()
@@ -47,7 +47,7 @@ class RepositoryTest extends \PHPUnit_Framework_TestCase
         $this->mockRepository = $this->getMock($this->repositoryType, $this->repositoryMethods, array(), '', false);
     }
 
-    /*
+    /**
      * Get mock of Repository
      * @return \Doctrine\ORM\Mock_EntityRepository
      */
@@ -56,7 +56,7 @@ class RepositoryTest extends \PHPUnit_Framework_TestCase
       return $this->mockRepository;
     }
 
-    /*
+    /**
      * Get Repository Name
      * @return string
      */
@@ -65,7 +65,7 @@ class RepositoryTest extends \PHPUnit_Framework_TestCase
       return $this->repositoryName;
     }
 
-    /*
+    /**
      * Get mock of Entity manager
      * @param  array                            $testRepositorySet set with Repository behavior - Set has Name of repository and bunch of emulated methods
      * @return \Doctrine\ORM\Mock_EntityManager
