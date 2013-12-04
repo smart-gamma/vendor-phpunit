@@ -9,7 +9,7 @@ $kernel = strpos(__DIR__, 'shared/vendor') ? __DIR__ . '/..' . '/../../../../../
 require_once $kernel;
 
 /**
- * PhpUnit Extension for Symfony2 services unit tests 
+ * PhpUnit Extension for Symfony2 services unit tests
  *
  * @author Evgen Kuzmin <jekccs@gmail.com>
  */
@@ -19,7 +19,7 @@ class ServiceTest extends \PHPUnit_Framework_TestCase
     /**
      * Selector to use real twig and inhouse classes or mock them
      * External api services like Paypal/Fotolia etc are mockering any case
-     *  
+     *
      * @var bool
      */
     protected $isMockEmulation = false;
@@ -45,12 +45,12 @@ class ServiceTest extends \PHPUnit_Framework_TestCase
     /**
      * Initializes a new instance of the ServiceTest class.
      *
-     * @param string      $service   path to service class
-     * @param bool        $construct_container flag to pass container in constructor  
+     * @param string $service             path to service class
+     * @param bool   $construct_container flag to pass container in constructor
      */
-    function __construct($service = '', $construct_container = false)
+    public function __construct($service = '', $construct_container = false)
     {
-        //Kernel/container startup 
+        //Kernel/container startup
         $this->init();
         parent::__construct();
 
@@ -77,7 +77,7 @@ class ServiceTest extends \PHPUnit_Framework_TestCase
 
     /**
      * Get mock of Entity manager
-     * @param array $testRepositorySet set with Repository behavior - Set has Name of repository and bunch of emulated methods 
+     * @param  array                            $testRepositorySet set with Repository behavior - Set has Name of repository and bunch of emulated methods
      * @return \Doctrine\ORM\Mock_EntityManager
      */
     protected function getEntityManagerMock($testRepositorySet = array())
