@@ -2,7 +2,7 @@
     "name": "gamma/phpunit",
     "description": "provides extended methods to test controllers and services for Symfony2",
     "type": "component, lib",
-    "version": "dev-master",
+    "version": "master",
     "require": {
         "php": ">=5.3.3"
     },
