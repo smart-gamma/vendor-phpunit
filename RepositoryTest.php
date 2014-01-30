@@ -67,7 +67,7 @@ class RepositoryTest extends \PHPUnit_Framework_TestCase
 
     /**
      * Get mock of Entity manager
-     * @param  array                            $testRepositorySet set with Repository behavior - Set has Name of repository and bunch of emulated methods
+     * @param  array  $testRepositorySet set with Repository behavior - Set has Name of repository and bunch of emulated methods
      * @return \Doctrine\ORM\Mock_EntityManager
      */
     protected function getEntityManagerMock($testRepositorySet = array())
@@ -90,7 +90,7 @@ class RepositoryTest extends \PHPUnit_Framework_TestCase
         // Add used repositories with emulated methods
         if(sizeof($testRepositorySet))
             foreach ($testRepositorySet as $testRepository) {
-                $mockEntityManager->expects($this->once())
+                $mockEntityManager->expects($this->any())
                     ->method('getRepository')
                     ->with($testRepository->getRepositoryName())
                     ->will($this->returnValue($testRepository->getMockRepository()));
