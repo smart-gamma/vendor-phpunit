@@ -2,11 +2,7 @@
 
 namespace Gamma\PhpUnit\Tester;
 
-/**
- * Solution to work in local dev/capifony target env
- */
-$kernel = strpos(__DIR__, 'shared/vendor') ? __DIR__ . '/..' . '/../../../../../../current/app/AppKernel.php' : __DIR__ . '/../../../../../../app/AppKernel.php';
-require_once $kernel;
+use \AppKernel;
 
 /**
  * PhpUnit Extension for Symfony2 services unit tests
@@ -26,7 +22,7 @@ class ServiceTest extends \PHPUnit_Framework_TestCase
 
     /**
      * App kernel
-     * @var \AppKernel $kernel
+     * @var AppKernel $kernel
      */
     protected static $kernel;
 
@@ -69,7 +65,7 @@ class ServiceTest extends \PHPUnit_Framework_TestCase
      */
     protected function init()
     {
-        self::$kernel = new \AppKernel('test', true);
+        self::$kernel = new AppKernel('test', true);
         self::$kernel->boot();
 
         $this->container = self::$kernel->getContainer();
