@@ -21,6 +21,13 @@ class ServiceTest extends \PHPUnit_Framework_TestCase
     protected $isMockEmulation = true;
 
     /**
+     * List of mocking repositories when $isMockEmulation = true;
+     * 
+     * @var array
+     */    
+    protected $emulatedRepositoriesList = array(); 
+    
+    /**
      * App kernel
      * @var AppKernel $kernel
      */
@@ -71,6 +78,28 @@ class ServiceTest extends \PHPUnit_Framework_TestCase
         $this->container = self::$kernel->getContainer();
     }
 
+    /**
+     * Sets up the fixture, for example, opens a network connection.
+     * This method is called before a test is executed.
+     */
+    protected function setUp()
+    {
+        //ORM emulation
+        if ($this->isMockEmulation) {
+            //pass all dependent emulated repositories to EntityManager 
+            $mockedRepositories = array();
+            foreach($this->emulatedRepositoriesList as $emulatedRepository) {
+                $mockRepository = new $emulatedRepository();
+                $mockedRepositories[$mockRepository->getRepositoryName()] = $mockRepository;
+            }
+            $this->service->setEm($this->getEntityManagerMock($mockedRepositories));
+        }
+        // Real ORM
+        else {
+            $this->service->setEm($this->container->get("doctrine.orm.entity_manager"));
+        }    
+    }
+    
     /**
      * Get mock of Entity manager
      * @param  array                            $testRepositorySet set with Repository behavior - Set has Name of repository and bunch of emulated methods
