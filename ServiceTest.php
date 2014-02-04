@@ -89,8 +89,8 @@ class ServiceTest extends \PHPUnit_Framework_TestCase
             //pass all dependent emulated repositories to EntityManager 
             $mockedRepositories = array();
             foreach($this->emulatedRepositoriesList as $emulatedRepository) {
-                $mockRepository = new $emulatedRepository();
-                $mockedRepositories[$mockRepository->getRepositoryName()] = $mockRepository;
+                $mock = new $emulatedRepository();
+                $mockedRepositories[$mock->getRepositoryName()] = $mock->getMockRepository();
             }
             $this->service->setEm($this->getEntityManagerMock($mockedRepositories));
         }
@@ -102,10 +102,10 @@ class ServiceTest extends \PHPUnit_Framework_TestCase
     
     /**
      * Get mock of Entity manager
-     * @param  array                            $testRepositorySet set with Repository behavior - Set has Name of repository and bunch of emulated methods
+     * @param  array  $mockedRepositories set with Repository behavior 
      * @return \Doctrine\ORM\Mock_EntityManager
      */
-    protected function getEntityManagerMock($testRepositorySet = array())
+    protected function getEntityManagerMock($mockedRepositories = array())
     {
         $mockEntityManager = $this->getMock('\Doctrine\ORM\EntityManager', array('getRepository', 'getClassMetadata', 'persist', 'flush'), array(), '', false);
 
@@ -120,18 +120,12 @@ class ServiceTest extends \PHPUnit_Framework_TestCase
         $mockEntityManager->expects($this->any())
                 ->method('flush')
                 ->will($this->returnValue(null));
-
-        // Add service used repositories with emulated methods
-        $repositories = array();
-        foreach ($testRepositorySet as $testRepository) {
-            $repositories[$testRepository->getRepositoryName()] = $testRepository->getMockRepository();
-        }
         
         $mockEntityManager->expects($this->any())
                         ->method('getRepository')
                         ->with($this->anything())
-                        ->will($this->returnCallback(function($name) use ($repositories) {
-                                                            return $repositories[$name];
+                        ->will($this->returnCallback(function($name) use ($mockedRepositories) { 
+                                                            return $mockedRepositories[$name];
                                                      }
                                                      )
                               );
