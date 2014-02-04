@@ -124,8 +124,8 @@ class ServiceTest extends \PHPUnit_Framework_TestCase
         $mockEntityManager->expects($this->any())
                         ->method('getRepository')
                         ->with($this->anything())
-                        ->will($this->returnCallback(function($name) use ($mockedRepositories) { 
-                                                            return $mockedRepositories[$name];
+                        ->will($this->returnCallback(function($repositoryName) use ($mockedRepositories) { 
+                                                            return $mockedRepositories[$repositoryName];
                                                      }
                                                      )
                               );
