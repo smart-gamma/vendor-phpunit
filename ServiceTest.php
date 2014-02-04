@@ -92,15 +92,21 @@ class ServiceTest extends \PHPUnit_Framework_TestCase
                 ->method('flush')
                 ->will($this->returnValue(null));
 
-        // Add used repositories with emulated methods
-        if (sizeof($testRepositorySet))
-            foreach ($testRepositorySet as $testRepository) {
-                $mockEntityManager->expects($this->once())
+        // Add service's using repositories with emulated methods
+        $repositories = array();
+        foreach ($testRepositorySet as $testRepository) {
+            $repositories[$testRepository->getRepositoryName()] = $testRepository->getMockRepository();
+        }
+        
+        $mockEntityManager->expects($this->any())
                         ->method('getRepository')
-                        ->with($testRepository->getRepositoryName())
-                        ->will($this->returnValue($testRepository->getMockRepository()));
-            }
-
+                        ->with($this->anything())
+                        ->will($this->returnCallback(function($name) use ($repositories) {
+                                                            return $repositories[$name];
+                                                     }
+                                                     )
+                              );
+        
         return $mockEntityManager;
     }
 }
