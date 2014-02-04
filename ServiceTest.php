@@ -92,7 +92,9 @@ class ServiceTest extends \PHPUnit_Framework_TestCase
                 $mock = new $emulatedRepository();
                 $mockedRepositories[$mock->getRepositoryName()] = $mock->getMockRepository();
             }
-            $this->service->setEm($this->getEntityManagerMock($mockedRepositories));
+            if(sizeof($this->emulatedRepositoriesList) > 0) {
+                $this->service->setEm($this->getEntityManagerMock($mockedRepositories));
+            }   
         }
         // Real ORM
         else {
