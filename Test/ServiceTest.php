@@ -14,12 +14,17 @@ abstract class ServiceTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * Selector to use real twig and inhouse classes or mock them
-     * External api services like Paypal/Fotolia etc are mockering any case
      *
      * @var bool
      */
-    protected $isMockEmulation = false;
+    protected $isMockEmulation = true;
 
+    /**
+     * Flag at the phpunit cli to switch off mock emulation and work with real classes
+     * Usage: phpunit -d noMock ... 
+     */
+    const DISABLE_EMULATION_CLI_ARG = 'noMock';
+    
     /**
      * List of mocking repositories when $isMockEmulation = true;
      * 
@@ -63,6 +68,8 @@ abstract class ServiceTest extends \PHPUnit_Framework_TestCase
      */
     public function __construct()
     {
+        $this->processEmulationMode();
+                
         //Kernel/container startup
         $this->init();
         parent::__construct();
@@ -95,7 +102,7 @@ abstract class ServiceTest extends \PHPUnit_Framework_TestCase
      * This method is called before a test is executed.
      */
     protected function setUp()
-    {
+    {        
         //ORM emulation
         if ($this->isMockEmulation) {
             //pass all dependent emulated repositories to EntityManager 
@@ -149,5 +156,19 @@ abstract class ServiceTest extends \PHPUnit_Framework_TestCase
                               );
         
         return $mockEntityManager;
+    }
+    
+    /**
+     * Parse phpunit cli for disabling mock emulation mode, that is enabled by default
+     * @return void 
+     */
+    private function processEmulationMode() {
+        global $argv;
+        
+        foreach($argv as $arg) {
+            if($arg == self::DISABLE_EMULATION_CLI_ARG) {
+                $this->isMockEmulation =  false;   
+            }
+        } 
     }
 }
