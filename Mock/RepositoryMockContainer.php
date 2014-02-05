@@ -1,12 +1,12 @@
 <?php
-namespace Gamma\PhpUnit\Tester;
+namespace Gamma\PhpUnit\Tester\Mock;
 
 /**
- * PhpUnit Extension for Symfony2 repositories unit tests
+ * PhpUnit Extension for Symfony2 repository mocking
  *
  * @author Evgen Kuzmin <jekccs@gmail.com>
  */
-class RepositoryTest extends \PHPUnit_Framework_TestCase
+abstract class RepositoryMockContainer extends \PHPUnit_Framework_TestCase
 {
     /**
      * Mapper type (ORM/ODM)
@@ -18,7 +18,7 @@ class RepositoryTest extends \PHPUnit_Framework_TestCase
      * Mock of repository
      * @var \Doctrine\ORM\Mock_EntityRepository $mockRepository
      */
-    protected $mockRepository;
+    protected $repositoryMock;
 
     /**
      * Testing Repository name (must be set in child class)
@@ -44,16 +44,16 @@ class RepositoryTest extends \PHPUnit_Framework_TestCase
     public function __construct()
     {
         /* @var $this->mockRepository \Doctrine\ORM\Mock_EntityRepository */
-        $this->mockRepository = $this->getMock($this->repositoryType, $this->repositoryMethods, array(), '', false);
+        $this->repositoryMock = $this->getMock($this->repositoryType, $this->repositoryMethods, array(), '', false);
     }
 
     /**
      * Get mock of Repository
      * @return \Doctrine\ORM\Mock_EntityRepository
      */
-    public function getMockRepository()
+    public function getRepositoryMock()
     {
-      return $this->mockRepository;
+      return $this->repositoryMock;
     }
 
     /**

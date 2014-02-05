@@ -1,6 +1,6 @@
 <?php
 
-namespace Gamma\PhpUnit\Tester;
+namespace Gamma\PhpUnit\Tester\Test;
 
 use \AppKernel;
 
@@ -9,7 +9,7 @@ use \AppKernel;
  *
  * @author Evgen Kuzmin <jekccs@gmail.com>
  */
-class ServiceTest extends \PHPUnit_Framework_TestCase
+abstract class ServiceTest extends \PHPUnit_Framework_TestCase
 {
 
     /**
@@ -90,11 +90,13 @@ class ServiceTest extends \PHPUnit_Framework_TestCase
             $mockedRepositories = array();
             foreach($this->emulatedRepositoriesList as $emulatedRepository) {
                 $mock = new $emulatedRepository();
-                $mockedRepositories[$mock->getRepositoryName()] = $mock->getMockRepository();
+                $mockedRepositories[$mock->getRepositoryName()] = $mock->getRepositoryMock();
             }
             if(sizeof($this->emulatedRepositoriesList) > 0) {
                 $this->service->setEm($this->getEntityManagerMock($mockedRepositories));
-            }   
+            } else { // none emulated reposirories created yet, so lets use real ones
+                $this->service->setEm($this->container->get("doctrine.orm.entity_manager"));
+            }  
         }
         // Real ORM
         else {
@@ -107,7 +109,7 @@ class ServiceTest extends \PHPUnit_Framework_TestCase
      * @param  array  $mockedRepositories set with Repository behavior 
      * @return \Doctrine\ORM\Mock_EntityManager
      */
-    protected function getEntityManagerMock($mockedRepositories = array())
+    private function getEntityManagerMock($mockedRepositories = array())
     {
         $mockEntityManager = $this->getMock('\Doctrine\ORM\EntityManager', array('getRepository', 'getClassMetadata', 'persist', 'flush'), array(), '', false);
 

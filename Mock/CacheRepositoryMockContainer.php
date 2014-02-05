@@ -1,24 +1,18 @@
 <?php
-namespace Gamma\PhpUnit\Tester;
+namespace Gamma\PhpUnit\Tester\Mock;
 
 /**
- * Mock for Repository with cache feature
+ * Mock container for Repository with cache feature
  *
  * @author Evgen Kuzmin <jekccs@gmail.com>
  */
-class CacheRepositoryTest extends RepositoryTest
+abstract class CacheRepositoryMockContainer extends RepositoryMockContainer
 {
     /**
      * Mapper type (ORM/ODM)
      * @var string $repositoryType
      */
     protected $repositoryType = 'LaMelle\Framework\Repository\CacheRepository';
-    
-    /**
-     * Mapper type (ORM/ODM)
-     * @var string $repositoryType
-     */
-    //protected $repositoryType = 'LaMelle\Framework\Repository\CacheRepository';
      
     function __construct() 
     {       
@@ -42,7 +36,7 @@ class CacheRepositoryTest extends RepositoryTest
          * initCachePath
          * @covers Gamma\Framework\Repository\CacheRepository::initCachePath
          */
-        $this->mockRepository
+        $this->repositoryMock
                  ->expects($this->any())
                  ->method("initCachePath")
                  ->with(new Symfony\Component\HttpFoundation\Request())
@@ -52,7 +46,7 @@ class CacheRepositoryTest extends RepositoryTest
          * getCachePrefix
          * @covers Gamma\Framework\Repository\CacheRepository::getCachePrefix
          */
-        $this->mockRepository
+        $this->repositoryMock
                  ->expects($this->any())
                  ->method("getCachePrefix")
                  ->will($this->returnValue('EMULATION_CACHE_PREFIX'));
@@ -61,7 +55,7 @@ class CacheRepositoryTest extends RepositoryTest
          * getCreatedSearchQueryCachePath
          * @covers Gamma\Framework\Repository\CacheRepository::getCreatedSearchQueryCachePath
          */
-        $this->mockRepository
+        $this->repositoryMock
                  ->expects($this->any())
                  ->method("getCreatedSearchQueryCachePath")
                  ->will($this->returnValue('EMULATION_CREATED_CACHE_PATH'));        

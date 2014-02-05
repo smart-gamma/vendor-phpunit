@@ -1,6 +1,6 @@
 <?php
 
-namespace Gamma\PhpUnit\Tester;
+namespace Gamma\PhpUnit\Tester\Test;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -10,7 +10,7 @@ use Symfony\Component\HttpFoundation\Response;
  *
  * @author Evgen Kuzmin <jekccs@gmail.com>
  */
-class ControllerTest extends ServiceTest
+abstract class ControllerTest extends ServiceTest
 {
     /**
      * App request
