@@ -3,6 +3,7 @@
 namespace Gamma\PhpUnit\Tester\Test;
 
 use \AppKernel;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * PhpUnit Extension for Symfony2 services unit tests
@@ -11,7 +12,6 @@ use \AppKernel;
  */
 abstract class ServiceTest extends \PHPUnit_Framework_TestCase
 {
-
     /**
      * Selector to use real twig and inhouse classes or mock them
      * External api services like Paypal/Fotolia etc are mockering any case
@@ -40,30 +40,40 @@ abstract class ServiceTest extends \PHPUnit_Framework_TestCase
     protected $container;
 
     /**
-     * Target test service
-     * @var mixed $service
+     * Target class name for the instance creation
+     * @var mixed $instance
      */
-    protected $service;
+    protected $targetClassName;
+    
+    /**
+     * Target test service
+     * @var mixed $instance
+     */
+    protected $instance;
 
     /**
-     * Initializes a new instance of the ServiceTest class.
+     * Selector to pass container to constructor of class
      *
-     * @param string $service             path to service class
-     * @param bool   $construct_container flag to pass container in constructor
+     * @var bool
      */
-    public function __construct($service = '', $construct_container = false)
+    protected $isConstructContainer = false;
+    
+    /**
+     * Initializes a new instance of the ServiceTest class.
+     */
+    public function __construct()
     {
         //Kernel/container startup
         $this->init();
         parent::__construct();
 
         //Call container independent service
-        if (!empty($service) && !$construct_container)
-            $this->service = new $service;
+        if (!empty($this->targetClassName) && !$this->isConstructContainer)
+            $this->instance = new $this->targetClassName;
 
         //Call container dependent service
-        if (!empty($service) && $construct_container)
-            $this->service = new $service($this->container);
+        if (!empty($this->targetClassName) && $this->isConstructContainer)
+            $this->instance = new $this->targetClassName($this->container);
     }
 
     /**
@@ -76,6 +86,8 @@ abstract class ServiceTest extends \PHPUnit_Framework_TestCase
         self::$kernel->boot();
 
         $this->container = self::$kernel->getContainer();
+        $this->container->enterScope('request');
+        $this->container->set('request', new Request(), 'request');
     }
 
     /**
@@ -93,14 +105,16 @@ abstract class ServiceTest extends \PHPUnit_Framework_TestCase
                 $mockedRepositories[$mock->getRepositoryName()] = $mock->getRepositoryMock();
             }
             if(sizeof($this->emulatedRepositoriesList) > 0) {
-                $this->service->setEm($this->getEntityManagerMock($mockedRepositories));
-            } else { // none emulated reposirories created yet, so lets use real ones
-                $this->service->setEm($this->container->get("doctrine.orm.entity_manager"));
+                $this->instance->setEm($this->getEntityManagerMock($mockedRepositories));
+            } 
+            // none emulated reposirories created yet, so lets use real ones for classes with entity manger passed
+            elseif(method_exists($this->instance,'setEm')) {                 
+                $this->instance->setEm($this->container->get("doctrine.orm.entity_manager"));
             }  
         }
         // Real ORM
         else {
-            $this->service->setEm($this->container->get("doctrine.orm.entity_manager"));
+            $this->instance->setEm($this->container->get("doctrine.orm.entity_manager"));
         }    
     }
     

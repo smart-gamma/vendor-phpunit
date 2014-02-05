@@ -35,20 +35,11 @@ abstract class ControllerTest extends ServiceTest
      * @var Symfony\Component\Templating\EngineInterface $templating
      */
     protected $templating;
-
-    /**
-     * Target test controller
-     * @var Symfony\Bundle\FrameworkBundle\Controller\Controller $controller
-     */
-    protected $controller;
-
+    
     /**
      * Initializes a new instance of the ControllerTest class.
-     *
-     * @param string $controller      path to controller to test
-     * @param bool   $isMockEmulation switcher for twig mock emulation or real render
      */
-    public function __construct($controller, $isMockEmulation = false)
+    public function __construct()
     {
             parent::__construct();
 
@@ -65,7 +56,7 @@ abstract class ControllerTest extends ServiceTest
             $this->container->set('request', $this->request, 'request');
 
             //Mock templating
-            if ($isMockEmulation) {
+            if ($this->isMockEmulation) {
                 //Twig emulation
                 $this->twig = $this->getMockBuilder('\Twig_Environment')
                                    ->setMethods(array('render', 'exists', 'supports'))
@@ -93,8 +84,8 @@ abstract class ControllerTest extends ServiceTest
                 $this->templating = $this->container->get('templating');
             }
 
-            $this->controller = new $controller;
-            $this->controller->setContainer($this->container);
+            $this->instance = new $this->targetClassName;
+            $this->instance->setContainer($this->container);
     }
 
     /**
