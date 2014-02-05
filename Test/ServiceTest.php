@@ -18,7 +18,7 @@ abstract class ServiceTest extends \PHPUnit_Framework_TestCase
      *
      * @var bool
      */
-    protected $isMockEmulation = true;
+    protected $isMockEmulation = false;
 
     /**
      * List of mocking repositories when $isMockEmulation = true;
@@ -113,7 +113,7 @@ abstract class ServiceTest extends \PHPUnit_Framework_TestCase
             }  
         }
         // Real ORM
-        else {
+        elseif(method_exists($this->instance,'setEm')) {
             $this->instance->setEm($this->container->get("doctrine.orm.entity_manager"));
         }    
     }
