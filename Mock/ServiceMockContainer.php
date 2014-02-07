@@ -32,6 +32,8 @@ abstract class ServiceMockContainer extends \PHPUnit_Framework_TestCase
     public function __construct()
     {
         $this->serviceMock = $this->getMock($this->serviceClass, $this->serviceMethods, array(), '', false);
+        /* Emulate methods of repository */
+        $this->setUpMethods(); 
     }
 
     /**
@@ -51,4 +53,10 @@ abstract class ServiceMockContainer extends \PHPUnit_Framework_TestCase
     {
       return $this->serviceClass;
     }
+    
+    /**
+     * Emulating repository's methods 
+     * @return void
+     */ 
+    abstract protected function setUpMethods();
 }

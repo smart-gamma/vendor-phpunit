@@ -45,6 +45,8 @@ abstract class RepositoryMockContainer extends \PHPUnit_Framework_TestCase
     {
         /* @var $this->mockRepository \Doctrine\ORM\Mock_EntityRepository */
         $this->repositoryMock = $this->getMock($this->repositoryType, $this->repositoryMethods, array(), '', false);
+        /* Emulate methods of repository */
+        $this->setUpMethods(); 
     }
 
     /**
@@ -64,4 +66,10 @@ abstract class RepositoryMockContainer extends \PHPUnit_Framework_TestCase
     {
       return $this->repositoryName;
     }
+    
+    /**
+     * Emulating repository's methods 
+     * @return void
+     */     
+    abstract protected function setUpMethods();
 }
