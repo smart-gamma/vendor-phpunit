@@ -23,7 +23,7 @@ abstract class ServiceTest extends \PHPUnit_Framework_TestCase
      * Flag at the phpunit cli to switch off mock emulation and work with real classes
      * Usage: phpunit -d noMock ... 
      */
-    const DISABLE_EMULATION_CLI_ARG = 'noMock';
+    const DISABLE_EMULATION_CLI_ARG = 'nomock';
     
     /**
      * List of mocking repositories when $isMockEmulation = true;
