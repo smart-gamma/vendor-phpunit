@@ -2,18 +2,18 @@
 
 namespace Gamma\PhpUnit\Tester\Test;
 
-use \AppKernel;
+use AppKernel;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
- * PhpUnit Extension for Symfony2 services unit tests
+ * PhpUnit Extension for Symfony2 services unit tests.
  *
  * @author Evgen Kuzmin <jekccs@gmail.com>
  */
 abstract class ServiceTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * Flag at the phpunit cli to switch off mock emulation and work with real classes
+     * Flag at the phpunit cli to switch off mock emulation and work with real classes.
      *
      * Usage: phpunit -d noMock ...
      */
@@ -22,49 +22,49 @@ abstract class ServiceTest extends \PHPUnit_Framework_TestCase
     const REQUEST_SCOPE = 'request';
 
     /**
-     * Selector to use real twig and inhouse classes or mock them
+     * Selector to use real twig and inhouse classes or mock them.
      *
      * @var bool
      */
     protected $isMockEmulation = true;
 
     /**
-     * List of mocking repositories when $isMockEmulation = true;
+     * List of mocking repositories when $isMockEmulation = true;.
      * 
      * @var array
      */
     protected $emulatedRepositoriesList = array();
 
     /**
-     * App kernel
+     * App kernel.
      *
-     * @var \AppKernel $kernel
+     * @var \AppKernel
      */
     protected static $kernel;
 
     /**
-     * DI container
+     * DI container.
      *
-     * @var \Symfony\Component\DependencyInjection\ContainerInterface $container
+     * @var \Symfony\Component\DependencyInjection\ContainerInterface
      */
     protected $container;
 
     /**
-     * Target class name for the instance creation
+     * Target class name for the instance creation.
      *
-     * @var mixed $instance
+     * @var mixed
      */
     protected $targetClassName;
 
     /**
-     * Target test service
+     * Target test service.
      *
-     * @var mixed $instance
+     * @var mixed
      */
     protected $instance;
 
     /**
-     * Selector to pass container to constructor of class
+     * Selector to pass container to constructor of class.
      *
      * @var bool
      */
@@ -85,7 +85,7 @@ abstract class ServiceTest extends \PHPUnit_Framework_TestCase
         if (!empty($this->targetClassName)) {
             if (!$this->isConstructContainer) {
                 //Call container independent service
-                $this->instance = new $this->targetClassName;
+                $this->instance = new $this->targetClassName();
             } else {
                 //Call container dependent service
                 $this->instance = new $this->targetClassName($this->container);
@@ -96,7 +96,7 @@ abstract class ServiceTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Boot Kernel and container init
+     * Boot Kernel and container init.
      */
     protected function init()
     {
@@ -122,8 +122,8 @@ abstract class ServiceTest extends \PHPUnit_Framework_TestCase
     protected function setUp()
     {
         if (!$this->isMockEmulation) {
-            if(method_exists($this->instance,'setEm')) {
-                $this->instance->setEm($this->container->get("doctrine.orm.entity_manager"));
+            if (method_exists($this->instance, 'setEm')) {
+                $this->instance->setEm($this->container->get('doctrine.orm.entity_manager'));
             }
 
             return;
@@ -131,7 +131,7 @@ abstract class ServiceTest extends \PHPUnit_Framework_TestCase
 
         if ($this->emulatedRepositoriesList) {
             //pass all dependent emulated repositories to EntityManager
-            foreach($this->emulatedRepositoriesList as $emulatedRepository) {
+            foreach ($this->emulatedRepositoriesList as $emulatedRepository) {
                 $mock = new $emulatedRepository();
                 $mockedRepositories[$mock->getRepositoryName()] = $mock->getRepositoryMock();
             }
@@ -143,7 +143,7 @@ abstract class ServiceTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Get mock of Entity manager
+     * Get mock of Entity manager.
      *
      * @param array $mockedRepositories
      *
@@ -178,7 +178,7 @@ abstract class ServiceTest extends \PHPUnit_Framework_TestCase
         $mockEntityManager->expects($this->any())
             ->method('getRepository')
             ->with($this->anything())
-            ->will($this->returnCallback(function($repositoryName) use ($mockedRepositories) {
+            ->will($this->returnCallback(function ($repositoryName) use ($mockedRepositories) {
                 return $mockedRepositories[$repositoryName];
             }))
         ;
@@ -187,18 +187,16 @@ abstract class ServiceTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Parse phpunit cli for disabling mock emulation mode, that is enabled by default
-     *
-     * @return void
+     * Parse phpunit cli for disabling mock emulation mode, that is enabled by default.
      */
     private function processEmulationMode()
     {
         global $argv;
 
-        foreach($argv as $arg) {
-            if($arg == self::DISABLE_EMULATION_CLI_ARG) {
+        foreach ($argv as $arg) {
+            if ($arg == self::DISABLE_EMULATION_CLI_ARG) {
                 $this->isMockEmulation = false;
             }
-        } 
+        }
     }
 }
