@@ -32,9 +32,9 @@ abstract class ServiceTest extends \PHPUnit_Framework_TestCase
      * List of mocking repositories when $isMockEmulation = true;
      * 
      * @var array
-     */    
-    protected $emulatedRepositoriesList = array(); 
-    
+     */
+    protected $emulatedRepositoriesList = array();
+
     /**
      * App kernel
      *
@@ -55,7 +55,7 @@ abstract class ServiceTest extends \PHPUnit_Framework_TestCase
      * @var mixed $instance
      */
     protected $targetClassName;
-    
+
     /**
      * Target test service
      *
@@ -69,7 +69,7 @@ abstract class ServiceTest extends \PHPUnit_Framework_TestCase
      * @var bool
      */
     protected $isConstructContainer = false;
-    
+
     /**
      * Initializes a new instance of the ServiceTest class.
      *
@@ -122,7 +122,9 @@ abstract class ServiceTest extends \PHPUnit_Framework_TestCase
     protected function setUp()
     {
         if (!$this->isMockEmulation) {
-            $this->instance->setEm($this->container->get("doctrine.orm.entity_manager"));
+            if(method_exists($this->instance,'setEm')) {
+                $this->instance->setEm($this->container->get("doctrine.orm.entity_manager"));
+            }
 
             return;
         }
@@ -138,13 +140,8 @@ abstract class ServiceTest extends \PHPUnit_Framework_TestCase
 
             return;
         }
-
-        // none emulated reposirories created yet, so lets use real ones for classes with entity manger passed
-        if(method_exists($this->instance,'setEm')) {
-            $this->instance->setEm($this->container->get("doctrine.orm.entity_manager"));
-        }
     }
-    
+
     /**
      * Get mock of Entity manager
      *
@@ -185,10 +182,10 @@ abstract class ServiceTest extends \PHPUnit_Framework_TestCase
                 return $mockedRepositories[$repositoryName];
             }))
         ;
-        
+
         return $mockEntityManager;
     }
-    
+
     /**
      * Parse phpunit cli for disabling mock emulation mode, that is enabled by default
      *
@@ -197,7 +194,7 @@ abstract class ServiceTest extends \PHPUnit_Framework_TestCase
     private function processEmulationMode()
     {
         global $argv;
-        
+
         foreach($argv as $arg) {
             if($arg == self::DISABLE_EMULATION_CLI_ARG) {
                 $this->isMockEmulation = false;
