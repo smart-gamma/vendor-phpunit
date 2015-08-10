@@ -15,7 +15,7 @@ abstract class ServiceTest extends \PHPUnit_Framework_TestCase
     /**
      * Flag at the phpunit cli to switch off mock emulation and work with real classes.
      *
-     * Usage: phpunit -d noMock ...
+     * Usage: phpunit -d nomock ...
      */
     const DISABLE_EMULATION_CLI_ARG = 'nomock';
 
@@ -121,8 +121,8 @@ abstract class ServiceTest extends \PHPUnit_Framework_TestCase
      */
     protected function setUp()
     {
-        if (!$this->isMockEmulation) {
-            if (method_exists($this->instance, 'setEm')) {
+        if (!$this->isMockEmulation) { 
+            if (method_exists($this->instance, 'setEm')) { 
                 $this->instance->setEm($this->container->get('doctrine.orm.entity_manager'));
             }
 
@@ -137,9 +137,14 @@ abstract class ServiceTest extends \PHPUnit_Framework_TestCase
             }
 
             $this->instance->setEm($this->getEntityManagerMock($mockedRepositories));
-
-            return;
+        } else {
+            // none emulated reposirories created yet, so lets use real ones for classes with entity manger passed
+            if (method_exists($this->instance, 'setEm')) {
+                $this->instance->setEm($this->container->get("doctrine.orm.entity_manager"));
+            }            
         }
+        
+        return;
     }
 
     /**
